@@ -71,9 +71,9 @@ cat >> "./model-quantized/README.md" << 'EOF'
 EOF
 
 # ── Step 5: Create destination repo & upload ────────────────────────────────
-hf repos create "$MODEL_DST" --type model --exist-ok --token "$HF_TOKEN"
+hf repo create "$MODEL_DST" --repo-type model --exist-ok --token "$HF_TOKEN"
 
-hf upload "$MODEL_DST" ./model-quantized --type model \
+hf upload "$MODEL_DST" ./model-quantized --repo-type model \
   --include '*.gguf' --include '*.json' --include '*.md' --include '*.txt' \
   --token "$HF_TOKEN"
 
