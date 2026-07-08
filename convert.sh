@@ -44,6 +44,7 @@ python3 llama.cpp/convert_hf_to_gguf.py \
   "./model-original" \
   --outfile "./model-original/model-f16.gguf" \
   --outtype f16
+
 # Quantize to Q8_0
 echo ">>> Quantizing to $QUANT_TYPE"
 mkdir -p "./model-quantized"
@@ -54,27 +55,36 @@ llama.cpp/build/bin/llama-quantize \
 
 # ── Step 4: Prepare upload folder ───────────────────────────────────────────
 echo ">>> Preparing upload folder"
-cp "./model-original/README.md" "./model-quantized/" 2>/dev/null || true
-cp "./model-original/config.json" "./model-quantized/" 2>/dev/null || true
-cp "./model-original/tokenizer.json" "./model-quantized/" 2>/dev/null || true
-cp "./model-original/tokenizer_config.json" "./model-quantized/" 2>/dev/null || true
-cp "./model-original/special_tokens_map.json" "./model-quantized/" 2>/dev/null || true
 
-# Add a note to README
-cat >> "./model-quantized/README.md" << 'EOF'
-
+# Create minimal model card
+cat > "./model-quantized/README.md" << 'MODELCARD'
 ---
-## GGUF Quantized Version
-- Quantization: Q8_0
-- Converted using: [llama.cpp](https://github.com/ggml-org/llama.cpp)
-- Base model: [Qwen/Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B)
-EOF
+license: other
+tags:
+- gguf
+- quantized
+---
+
+# Model Card
+
+This is a Q8_0 quantized GGUF version of the base model.
+
+## Base Model
+
+- **Source**: [Qwen/Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B)
+- **Quantization**: Q8_0
+- **Converted using**: [llama.cpp](https://github.com/ggml-org/llama.cpp)
+MODELCARD
 
 # ── Step 5: Create destination repo & upload ────────────────────────────────
 hf repo create "$MODEL_DST" --repo-type model --exist-ok --token "$HF_TOKEN"
 
-hf upload "$MODEL_DST" ./model-quantized --repo-type model \
-  --include '*.gguf' --include '*.json' --include '*.md' --include '*.txt' \
+# Upload README.md
+hf upload "$MODEL_DST" ./model-quantized/README.md --repo-type model \
+  --token "$HF_TOKEN"
+
+# Upload Q8_0 GGUF file
+hf upload "$MODEL_DST" ./model-quantized/*.gguf --repo-type model \
   --token "$HF_TOKEN"
 
 echo ">>> Done! Model uploaded to https://huggingface.co/$MODEL_DST"
