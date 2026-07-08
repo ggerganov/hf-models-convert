@@ -1,0 +1,1 @@
+huggingface_hub[hf_xet]==1.22.0
