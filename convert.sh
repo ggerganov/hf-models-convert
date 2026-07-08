@@ -57,23 +57,18 @@ llama.cpp/build/bin/llama-quantize \
 echo ">>> Preparing upload folder"
 
 # Create minimal model card
-cat > "./model-quantized/README.md" << 'MODELCARD'
+cat > "./model-quantized/README.md" << MODELCARD
 ---
 license: other
 tags:
 - gguf
 - quantized
+base_model:
+- $MODEL_SRC
 ---
 
-# Model Card
+WIP
 
-This is a Q8_0 quantized GGUF version of the base model.
-
-## Base Model
-
-- **Source**: [Qwen/Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B)
-- **Quantization**: Q8_0
-- **Converted using**: [llama.cpp](https://github.com/ggml-org/llama.cpp)
 MODELCARD
 
 # ── Step 5: Create destination repo & upload ────────────────────────────────
