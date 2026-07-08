@@ -11,7 +11,7 @@ cd "$WORK_DIR"
 # Check for HF_TOKEN
 if [ -z "${HF_TOKEN:-}" ]; then
   echo "Error: HF_TOKEN environment variable is not set"
-  echo "Usage: export HF_TOKEN=your_token && ./convert_and_quantize.sh"
+  echo "Usage: export HF_TOKEN=your_token && ./convert.sh"
   exit 1
 fi
 
