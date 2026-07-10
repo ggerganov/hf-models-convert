@@ -39,9 +39,6 @@ if [ -z "${HF_TOKEN:-}" ]; then
   exit 1
 fi
 
-echo ">>> Installing HF CLI"
-pip install -r requirements.txt
-
 echo ">>> Preparing llama.cpp"
 if [ -d "llama.cpp" ]; then
   echo ">>> llama.cpp already exists, pulling latest master"
@@ -61,7 +58,7 @@ cd ../..
 echo ">>> Installing llama.cpp Python dependencies"
 pip install -r llama.cpp/requirements.txt
 
-echo ">>> Re-installing HF CLI"
+echo ">>> Installing HF CLI"
 pip install -r requirements.txt
 
 NUM_MODELS=${#MODEL_SOURCES[@]}
