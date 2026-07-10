@@ -14,6 +14,24 @@ if [ -z "${HF_TOKEN:-}" ]; then
   exit 1
 fi
 
+# Get current SHA of the source model using HF API
+echo ">>> Checking for updates in $MODEL_SRC"
+CURRENT_SHA=$(python3 -c "import urllib.request, json, sys; print(json.load(urllib.request.urlopen('https://huggingface.co/api/models/' + sys.argv[1]))['sha'])" "$MODEL_SRC")
+
+if [ -z "$CURRENT_SHA" ]; then
+  echo "Error: Failed to retrieve model info from Hugging Face"
+  exit 1
+fi
+
+# Fetch LAST_SHA from destination repo
+echo ">>> Checking last processed SHA in $MODEL_DST"
+LAST_SHA=$(curl -s "https://huggingface.co/$MODEL_DST/resolve/main/.src_sha")
+
+if [ "$CURRENT_SHA" = "$LAST_SHA" ]; then
+  echo ">>> Source model has not changed (SHA: $CURRENT_SHA). Skipping conversion."
+  exit 0
+fi
+
 # Install HF CLI
 echo ">>> Installing HF CLI"
 pip install -r requirements.txt
@@ -82,12 +100,13 @@ pip install -r requirements.txt
 # ── Step 5: Create destination repo & upload ────────────────────────────────
 hf repos create "$MODEL_DST" --type model --exist-ok --token "$HF_TOKEN"
 
-# Upload README.md
-hf upload "$MODEL_DST" ./model-quantized/README.md --type model \
-  --token "$HF_TOKEN"
+# Store source SHA in destination repo
+echo "$CURRENT_SHA" > "./model-quantized/.src_sha"
 
-# Upload Q8_0 GGUF file
-hf upload "$MODEL_DST" ./model-quantized/*.gguf --type model \
+# Upload README.md, Q8_0 GGUF file, and source SHA
+hf upload "$MODEL_DST" ./model-quantized \
+  --include "*.gguf" --include ".src_sha" --include "README.md" \
+  --type model \
   --token "$HF_TOKEN"
 
 echo ">>> Done! Model uploaded to https://huggingface.co/$MODEL_DST"
