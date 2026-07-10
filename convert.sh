@@ -25,7 +25,7 @@ fi
 
 # Fetch LAST_SHA from destination repo
 echo ">>> Checking last processed SHA in $MODEL_DST"
-LAST_SHA=$(curl -s "https://huggingface.co/$MODEL_DST/resolve/main/.src_sha")
+LAST_SHA=$(curl -Ls "https://huggingface.co/$MODEL_DST/resolve/main/.src_sha")
 
 if [ "$CURRENT_SHA" = "$LAST_SHA" ]; then
   echo ">>> Source model has not changed (SHA: $CURRENT_SHA). Skipping conversion."
