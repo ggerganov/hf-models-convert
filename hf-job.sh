@@ -7,11 +7,11 @@ set -euo pipefail
 echo ">>> Starting HF Job: Model Convert & Quantize"
 
 hf jobs run \
-  --flavor cpu-xl \
-  --secrets HF_TOKEN \
-  --env HF_HUB_ENABLE_HF_XET=1 \
-  python:3.11-slim \
-  bash -c '
+    --flavor cpu-xl \
+    --secrets HF_TOKEN \
+    --env HF_HUB_ENABLE_HF_XET=1 \
+    python:3.11-slim \
+    bash -c '
     set -euo pipefail
 
     # Install system dependencies
@@ -28,6 +28,6 @@ hf jobs run \
 
     # Run the conversion script
     bash convert.sh
-  '
+'
 
 echo ">>> Job submitted. Check logs with: hf jobs logs"
