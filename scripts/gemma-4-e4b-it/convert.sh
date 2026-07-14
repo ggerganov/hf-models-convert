@@ -25,9 +25,10 @@ python3 "$LLAMA_CPP/convert_hf_to_gguf.py" "$PATH_ASSISTANT" \
 # MTP: Q8_0
 "$QUANTIZE" "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-BF16.gguf" "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-Q8_0.gguf" Q8_0 1>&2
 
-# MTP Q4_0 from QAT (direct conversion)
+# MTP Q4_0 from QAT
 python3 "$LLAMA_CPP/convert_hf_to_gguf.py" "$PATH_QAT_Q4_0" \
-    --outtype q4_0 --outfile "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-Q4_0.gguf" --model-name "$DISPLAY_NAME"
+    --outtype bf16 --outfile "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-QAT-BF16.gguf" --model-name "$DISPLAY_NAME"
+"$QUANTIZE" --pure "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-QAT-BF16.gguf" "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-Q4_0.gguf" Q4_0 1>&2
 
 # --- Produced files ---
 
