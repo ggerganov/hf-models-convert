@@ -148,7 +148,8 @@ for config_path in "${config_paths[@]}"; do
   done
 
   echo ">>> Running conversion script: $script_dir/convert.sh"
-  produced_files=$(bash "$script_dir/convert.sh" "$upload_dir" "./llama.cpp")
+  bash "$script_dir/convert.sh" "$upload_dir" "./llama.cpp" >"$upload_dir/convert.log" 2>&1
+  produced_files=$(grep '\.gguf$' "$upload_dir/convert.log")
 
   # Write .src_sha with all dependency SHAs
   printf "%s" "$current_sha_lines" > "$upload_dir/.src_sha"
@@ -161,7 +162,7 @@ for config_path in "${config_paths[@]}"; do
   done <<< "$produced_files"
 
   hf upload "$dest" "$upload_dir" \
-      $gguf_flags --include ".src_sha" --include "README.md" \
+      $gguf_flags --include ".src_sha" --include "README.md" --include "convert.log" \
       --type model
 
   echo ">>> Uploaded to https://huggingface.co/$dest"
