@@ -1,0 +1,13 @@
+# Qwen/Qwen3.6-27B
+
+## convert the target model and omit any MTP layers
+python convert_hf_to_gguf.py ~/Data/huggingface/Qwen/Qwen3.6-27B/ --outtype bf16 --outfile ~/Data/huggingface/Qwen/Qwen3.6-27B/gguf/Qwen3.6-27B-BF16.gguf --no-mtp
+
+## convert the mmproj separately
+python convert_hf_to_gguf.py ~/Data/huggingface/Qwen/Qwen3.6-27B/ --outtype bf16 --outfile ~/Data/huggingface/Qwen/Qwen3.6-27B/gguf/mmproj-Qwen3.6-27B-BF16.gguf --mmproj
+
+## convert the MTP layers separately
+python convert_hf_to_gguf.py ~/Data/huggingface/Qwen/Qwen3.6-27B/ --outtype bf16 --outfile ~/Data/huggingface/Qwen/Qwen3.6-27B/gguf/mtp-Qwen3.6-27B-BF16.gguf --mtp
+
+## convert DFlash layers separately from z-lab/Qwen3.6-27B-DFlash repo
+python convert_hf_to_gguf.py ~/Data/huggingface/z-lab/Qwen3.6-27B-DFlash/ --outtype bf16 --target-model ~/Data/huggingface/Qwen/Qwen3.6-27B/ --outfile ~/Data/huggingface/Qwen/Qwen3.6-27B/gguf/dflash-Qwen3.6-27B-BF16.gguf

@@ -1,0 +1,3 @@
+DISPLAY_NAME="Qwen3.5-0.8B"
+DEST_REPO="ggerganov/Qwen3.5-0.8B-GGUF"
+DEP_PRIMARY="Qwen/Qwen3.5-0.8B"
