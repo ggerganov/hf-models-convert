@@ -123,8 +123,8 @@ for config_path in "${config_paths[@]}"; do
       rm -rf "$upload_dir"
       mkdir -p "$upload_dir"
       cp "$script_dir/README.md" "$upload_dir/"
-      hf repos create "$dest" --type model --exist-ok --token "$HF_TOKEN"
-      hf upload "$dest" "$upload_dir" --include "README.md" --type model --token "$HF_TOKEN"
+      hf repos create "$dest" --type model --exist-ok"
+      hf upload "$dest" "$upload_dir" --include "README.md" --type model"
       rm -rf "$upload_dir"
       continue
   fi
@@ -153,7 +153,7 @@ for config_path in "${config_paths[@]}"; do
   # Write .src_sha with all dependency SHAs
   printf "%s" "$current_sha_lines" > "$upload_dir/.src_sha"
 
-  hf repos create "$dest" --type model --exist-ok --token "$HF_TOKEN"
+  hf repos create "$dest" --type model --exist-ok"
 
   gguf_flags=""
   while IFS= read -r file; do
@@ -162,8 +162,7 @@ for config_path in "${config_paths[@]}"; do
 
   hf upload "$dest" "$upload_dir" \
       $gguf_flags --include ".src_sha" --include "README.md" \
-      --type model \
-      --token "$HF_TOKEN"
+      --type model
 
   echo ">>> Uploaded to https://huggingface.co/$dest"
 
