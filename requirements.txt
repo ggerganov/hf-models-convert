@@ -1,1 +1,4 @@
 huggingface_hub[hf_xet]==1.22.0
+transformers==5.13.1
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch

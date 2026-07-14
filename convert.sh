@@ -48,9 +48,6 @@ cmake .. -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_UI=OFF
 make -j"$CPU_COUNT" llama-quantize
 cd ../..
 
-echo ">>> Installing llama.cpp Python dependencies"
-pip install -r llama.cpp/requirements.txt
-
 echo ">>> Installing HF CLI"
 pip install -r requirements.txt
 
@@ -132,8 +129,6 @@ for config_path in "${config_paths[@]}"; do
       continue
   fi
 
-  pip install -r llama.cpp/requirements.txt
-
   # Download all dependencies
   rm -rf "$upload_dir"
   mkdir -p "$upload_dir"
@@ -158,7 +153,6 @@ for config_path in "${config_paths[@]}"; do
   # Write .src_sha with all dependency SHAs
   printf "%s" "$current_sha_lines" > "$upload_dir/.src_sha"
 
-  pip install -r requirements.txt
   hf repos create "$dest" --type model --exist-ok --token "$HF_TOKEN"
 
   gguf_flags=""
