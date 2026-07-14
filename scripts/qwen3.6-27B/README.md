@@ -5,7 +5,12 @@ tags:
 - quantized
 base_model:
 - Qwen/Qwen3.6-27B
-- z-lab/Qwen3.6-27B-DFlash
 ---
+
+# Qwen3.6-27B
+
+Source repos:
+- https://huggingface.co/Qwen/Qwen3.6-27B
+- https://huggingface.co/z-lab/Qwen3.6-27B-DFlash
 
 TODO: add info

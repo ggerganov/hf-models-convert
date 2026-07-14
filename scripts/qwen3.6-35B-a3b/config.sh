@@ -1,0 +1,4 @@
+DISPLAY_NAME="Qwen3.6-35B-A3B"
+DEST_REPO="ggerganov/Qwen3.6-35B-A3B-GGUF"
+DEP_PRIMARY="Qwen/Qwen3.6-35B-A3B"
+DEP_DFLASH="z-lab/Qwen3.6-35B-A3B-DFlash"
