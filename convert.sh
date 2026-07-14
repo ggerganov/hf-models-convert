@@ -66,114 +66,115 @@ fi
 for config_path in "${config_paths[@]}"; do
     script_dir="$(dirname "$config_path")"
 
-  # Clean up DEP_* and PATH_* from previous iteration
-  for var in $(compgen -v | grep -E '^(DEP_|PATH_)' || true); do
-      unset "$var"
-  done
+    # Clean up DEP_* and PATH_* from previous iteration
+    for var in $(compgen -v | grep -E '^(DEP_|PATH_)' || true); do
+        unset "$var"
+    done
 
-  source "$config_path"
+    source "$config_path"
 
-  display="${DISPLAY_NAME}"
-  dest="${DEST_REPO}"
-  upload_dir="./upload-${display//-/_}"
+    display="${DISPLAY_NAME}"
+    dest="${DEST_REPO}"
+    upload_dir="./upload-${display//-/_}"
 
-  echo ""
-  echo "═══════════════════════════════════════════════════════════"
-  echo ">>> Processing: $display → $dest"
-  echo "═══════════════════════════════════════════════════════════"
+    echo ""
+    echo "═══════════════════════════════════════════════════════════"
+    echo ">>> Processing: $display → $dest"
+    echo "═══════════════════════════════════════════════════════════"
 
-  # Collect all DEP_* variable keys (e.g. PRIMARY, DFLASH, EAGLE3)
-  dep_keys=$(compgen -v | grep '^DEP_' | sed 's/^DEP_//' | sort)
+    # Collect all DEP_* variable keys (e.g. PRIMARY, DFLASH, EAGLE3)
+    dep_keys=$(compgen -v | grep '^DEP_' | sed 's/^DEP_//' | sort)
 
-  # Fetch current SHAs for all dependencies
-  current_sha_lines=""
-  for key in $dep_keys; do
-      repo_var="DEP_$key"
-      repo="${!repo_var}"
+    # Fetch current SHAs for all dependencies
+    current_sha_lines=""
+    for key in $dep_keys; do
+        repo_var="DEP_$key"
+        repo="${!repo_var}"
 
-      echo ">>> Checking for updates in $repo ($key)"
-      sha=$(python3 -c "import urllib.request, json, sys; print(json.load(urllib.request.urlopen('https://huggingface.co/api/models/' + sys.argv[1]))['sha'])" "$repo")
+        echo ">>> Checking for updates in $repo ($key)"
+        sha=$(python3 -c "import urllib.request, json, sys; print(json.load(urllib.request.urlopen('https://huggingface.co/api/models/' + sys.argv[1]))['sha'])" "$repo")
 
-      if [ -z "$sha" ]; then
-          echo "Error: Failed to retrieve model info from Hugging Face for $repo"
-          exit 1
-      fi
+        if [ -z "$sha" ]; then
+            echo "Error: Failed to retrieve model info from Hugging Face for $repo"
+            exit 1
+        fi
 
-      current_sha_lines+="${key}=${sha}"$'\n'
-  done
+        current_sha_lines+="${key}=${sha}"$'\n'
+    done
 
-  # Read last-processed SHAs from destination repo
-  last_sha_file=$(curl -Ls "https://huggingface.co/$dest/resolve/main/.src_sha" 2>/dev/null || echo "")
+    # Read last-processed SHAs from destination repo
+    last_sha_file=$(curl -Ls "https://huggingface.co/$dest/resolve/main/.src_sha" 2>/dev/null || echo "")
 
-  # Compare — re-convert if ANY dependency changed
-  needs_convert=false
-  for key in $dep_keys; do
-      current=$(echo "$current_sha_lines" | grep "^${key}=" | cut -d= -f2-)
-      last=$(echo "$last_sha_file" | grep "^${key}=" | cut -d= -f2- 2>/dev/null || echo "")
+    # Compare — re-convert if ANY dependency changed
+    needs_convert=false
+    for key in $dep_keys; do
+        current=$(echo "$current_sha_lines" | grep "^${key}=" | cut -d= -f2-)
+        last=$(echo "$last_sha_file" | grep "^${key}=" | cut -d= -f2- 2>/dev/null || echo "")
 
-      if [ "$current" != "$last" ]; then
-          echo ">>> $key changed (current: ${current:0:8}…, last: ${last:0:8}…)"
-          needs_convert=true
-          break
-      fi
-  done
+        if [ "$current" != "$last" ]; then
+            echo ">>> $key changed (current: ${current:0:8}…, last: ${last:0:8}…)"
+            needs_convert=true
+            break
+        fi
+    done
 
-  if [ "$needs_convert" = false ]; then
-      echo ">>> No dependency changes detected. Uploading README only."
-      rm -rf "$upload_dir"
-      mkdir -p "$upload_dir"
-      cp "$script_dir/README.md" "$upload_dir/"
-      hf repos create "$dest" --type model --exist-ok"
-      hf upload "$dest" "$upload_dir" --include "README.md" --type model"
-      rm -rf "$upload_dir"
-      continue
-  fi
+    if [ "$needs_convert" = false ]; then
+        echo ">>> No dependency changes detected. Uploading README only."
+        rm -rf "$upload_dir"
+        mkdir -p "$upload_dir"
+        cp "$script_dir/README.md" "$upload_dir/"
+        hf repos create "$dest" --type model --exist-ok"
+        hf upload "$dest" "$upload_dir" --include "README.md" --type model"
+        rm -rf "$upload_dir"
+        continue
+    fi
 
-  # Download all dependencies
-  rm -rf "$upload_dir"
-  mkdir -p "$upload_dir"
-  cp "$script_dir/README.md" "$upload_dir/"
+    # Download all dependencies
+    rm -rf "$upload_dir"
+    mkdir -p "$upload_dir"
+    cp "$script_dir/README.md" "$upload_dir/"
 
-  temp_dirs=()
-  for key in $dep_keys; do
-      repo_var="DEP_$key"
-      repo="${!repo_var}"
-      temp_dir="./model-temp-${display//-/_}-${key}"
-      temp_dirs+=("$temp_dir")
+    temp_dirs=()
+    for key in $dep_keys; do
+        repo_var="DEP_$key"
+        repo="${!repo_var}"
+        temp_dir="./model-temp-${display//-/_}-${key}"
+        temp_dirs+=("$temp_dir")
 
-      echo ">>> Downloading $repo → $key"
-      hf download "$repo" --local-dir "$temp_dir"
+        echo ">>> Downloading $repo → $key"
+        hf download "$repo" --local-dir "$temp_dir"
 
-      export "PATH_$key=$temp_dir"
-  done
+        export "PATH_$key=$temp_dir"
+    done
 
-  echo ">>> Running conversion script: $script_dir/convert.sh"
-  bash "$script_dir/convert.sh" "$upload_dir" "./llama.cpp" >"$upload_dir/convert.log" 2>&1
-  produced_files=$(grep '\.gguf$' "$upload_dir/convert.log")
+    echo ">>> Running conversion script: $script_dir/convert.sh"
+    bash "$script_dir/convert.sh" "$upload_dir" "./llama.cpp" >"$upload_dir/convert.log" 2>&1
+    produced_files=$(grep '\.gguf$' "$upload_dir/convert.log")
 
-  # Write .src_sha with all dependency SHAs
-  printf "%s" "$current_sha_lines" > "$upload_dir/.src_sha"
+    # Write .src_sha with all dependency SHAs
+    printf "%s" "$current_sha_lines" > "$upload_dir/.src_sha"
 
-  hf repos create "$dest" --type model --exist-ok"
+    hf repos create "$dest" --type model --exist-ok
 
-  gguf_flags=""
-  while IFS= read -r file; do
-      [ -n "$file" ] && gguf_flags="$gguf_flags --include $file"
-  done <<< "$produced_files"
+    gguf_flags=""
 
-  hf upload "$dest" "$upload_dir" \
-      $gguf_flags --include ".src_sha" --include "README.md" --include "convert.log" \
-      --type model
+    while IFS= read -r file; do
+        [ -n "$file" ] && gguf_flags="$gguf_flags --include $file"
+    done <<< "$produced_files"
 
-  echo ">>> Uploaded to https://huggingface.co/$dest"
+    hf upload "$dest" "$upload_dir" \
+        $gguf_flags --include ".src_sha" --include "README.md" --include "convert.log" \
+        --type model
 
-  rm -rf "$upload_dir"
-  for dir in "${temp_dirs[@]}"; do
-      rm -rf "$dir"
-  done
-  for key in $dep_keys; do
-      unset "PATH_$key"
-  done
+    echo ">>> Uploaded to https://huggingface.co/$dest"
+
+    rm -rf "$upload_dir"
+    for dir in "${temp_dirs[@]}"; do
+        rm -rf "$dir"
+    done
+    for key in $dep_keys; do
+        unset "PATH_$key"
+    done
 done
 
 echo ""
