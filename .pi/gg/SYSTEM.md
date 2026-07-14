@@ -11,6 +11,7 @@ Coding:
 - When referencing issues or PRs in comments, use the format:
   - C/C++ code: `// ref: <url>`
   - Other (CMake, etc.): `# ref: <url>`
+- Don't add stupid comments to the code
 
 Pull requests (PRs):
 - New branch names are prefixed with "gg/"
