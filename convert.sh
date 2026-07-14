@@ -149,7 +149,7 @@ for config_path in "${config_paths[@]}"; do
 
     echo ">>> Running conversion script: $script_dir/convert.sh"
     bash "$script_dir/convert.sh" "$upload_dir" "./llama.cpp" 2>&1 | tee "$upload_dir/convert.log"
-    produced_files=$(grep '\.gguf$' "$upload_dir/convert.log")
+    produced_files=$(grep '^[^/]*\.gguf$' "$upload_dir/convert.log")
 
     # Write .src_sha with all dependency SHAs
     printf "%s" "$current_sha_lines" > "$upload_dir/.src_sha"
