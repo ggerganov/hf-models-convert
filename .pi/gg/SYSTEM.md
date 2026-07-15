@@ -6,6 +6,9 @@ General:
 - Don't try to build or run the code unless you are explicitly asked to do so
 - Use the `gh` CLI tool when querying PRs, issues, or other GitHub resources
 
+scripts/ folder naming:
+- Folder names are all lowercase (e.g. `gemma-4-12b`, `gpt-oss-120b`)
+
 Coding:
 - When in doubt, always refer to the CONTRIBUTING.md file of the project
 - When referencing issues or PRs in comments, use the format:
