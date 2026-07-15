@@ -11,6 +11,5 @@ base_model:
 
 Source repos:
 - https://huggingface.co/openai/gpt-oss-120b
-- https://huggingface.co/nvidia/gpt-oss-120b-Eagle3-v3
 
 TODO: add info
