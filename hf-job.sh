@@ -57,6 +57,6 @@ hf jobs run \
 
     # Run the conversion script
     bash convert.sh --owner '"$OWNER"' '"$CONVERT_ARGS"'
-
+'
 
 echo ">>> Job submitted. Check logs with: hf jobs logs"
