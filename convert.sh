@@ -5,10 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # Parse arguments
+OWNER=""
 ONE_MODEL=""
 FILTER_REGEX=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        --owner)
+            OWNER="$2"
+            shift 2
+            ;;
         --one)
             ONE_MODEL="$2"
             shift 2
@@ -23,6 +28,11 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [ -z "$OWNER" ]; then
+    echo "Error: --owner is required"
+    exit 1
+fi
 
 if [ -n "$ONE_MODEL" ] && [ -n "$FILTER_REGEX" ]; then
     echo "Error: --one and --filter are mutually exclusive"
@@ -96,7 +106,7 @@ for config_path in "${config_paths[@]}"; do
     source "$config_path"
 
     display="${DISPLAY_NAME}"
-    dest="${DEST_REPO}"
+    dest="${OWNER}/${DEST_REPO}"
     upload_dir="./upload-${display//-/_}"
 
     echo ""

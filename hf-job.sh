@@ -2,14 +2,19 @@
 set -euo pipefail
 
 # Hugging Face Job to run convert.sh on HF infrastructure
-# Usage: ./hf-job.sh [--one <name>] [--filter <regex>]
+# Usage: ./hf-job.sh --owner <owner> [--one <name>] [--filter <regex>]
 
 echo ">>> Starting HF Job: Model Convert & Quantize"
 
 # Collect arguments to pass to convert.sh
+OWNER=""
 CONVERT_ARGS=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        --owner)
+            OWNER="$2"
+            shift 2
+            ;;
         --one)
             CONVERT_ARGS="$CONVERT_ARGS --one $2"
             shift 2
@@ -24,6 +29,11 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [ -z "$OWNER" ]; then
+    echo "Error: --owner is required"
+    exit 1
+fi
 
 hf jobs run \
     --flavor cpu-xl \
@@ -46,7 +56,7 @@ hf jobs run \
     cd /tmp/convert
 
     # Run the conversion script
-    bash convert.sh '"$CONVERT_ARGS"'
-'
+    bash convert.sh --owner '"$OWNER"' '"$CONVERT_ARGS"'
+
 
 echo ">>> Job submitted. Check logs with: hf jobs logs"

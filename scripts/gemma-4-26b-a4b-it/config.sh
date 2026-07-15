@@ -1,5 +1,5 @@
 DISPLAY_NAME="gemma-4-26B-A4B-it"
-DEST_REPO="ggerganov/gemma-4-26B-A4B-it-GGUF"
+DEST_REPO="gemma-4-26B-A4B-it-GGUF"
 DEP_PRIMARY="google/gemma-4-26B-A4B-it"
 DEP_ASSISTANT="google/gemma-4-26B-A4B-it-assistant"
 DEP_QAT_Q4_0="google/gemma-4-26B-A4B-it-qat-q4_0-unquantized-assistant"

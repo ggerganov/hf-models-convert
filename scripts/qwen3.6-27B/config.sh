@@ -1,4 +1,4 @@
 DISPLAY_NAME="Qwen3.6-27B"
-DEST_REPO="ggerganov/Qwen3.6-27B-GGUF"
+DEST_REPO="Qwen3.6-27B-GGUF"
 DEP_PRIMARY="Qwen/Qwen3.6-27B"
 DEP_DFLASH="z-lab/Qwen3.6-27B-DFlash"
