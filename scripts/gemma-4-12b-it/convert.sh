@@ -30,8 +30,8 @@ python3 "$LLAMA_CPP/convert_hf_to_gguf.py" "$PATH_QAT_Q4_0" \
     --outtype bf16 --outfile "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-QAT-BF16.gguf" --model-name "$DISPLAY_NAME"
 "$QUANTIZE" --pure "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-QAT-BF16.gguf" "$OUTPUT_DIR/mtp-${DISPLAY_NAME}-Q4_0.gguf" Q4_0 1>&2
 
-# Target Q4_0 from QAT
-python3 "$LLAMA_CPP/convert_hf_to_gguf.py" "$PATH_QAT_Q4_0_TARGET" \
+# Unquantized Q4_0 from QAT
+python3 "$LLAMA_CPP/convert_hf_to_gguf.py" "$PATH_QAT_Q4_0_UNQUANTIZED" \
     --outtype bf16 --outfile "$OUTPUT_DIR/${DISPLAY_NAME}-QAT-BF16.gguf" --model-name "$DISPLAY_NAME"
 "$QUANTIZE" --pure --tensor-type "^token_embd=q8_0" "$OUTPUT_DIR/${DISPLAY_NAME}-QAT-BF16.gguf" "$OUTPUT_DIR/${DISPLAY_NAME}-Q4_0.gguf" Q4_0 1>&2
 
