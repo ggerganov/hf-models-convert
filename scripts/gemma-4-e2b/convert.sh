@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -euox pipefail
 
 OUTPUT_DIR="$1"
 LLAMA_CPP="$2"
