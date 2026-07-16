@@ -36,6 +36,7 @@ if [ -z "$OWNER" ]; then
 fi
 
 hf jobs run \
+    --namespace "$OWNER" \
     --flavor cpu-xl \
     --secrets HF_TOKEN \
     --env HF_HUB_ENABLE_HF_XET=1 \
