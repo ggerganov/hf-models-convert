@@ -55,8 +55,7 @@ hf jobs run \
       build-essential \
       curl \
       git \
-      cmake \
-      && rm -rf /var/lib/apt/lists/*
+      cmake
 
     # Clone the conversion scripts
     git clone https://github.com/ggml-org/convert.git /tmp/convert
