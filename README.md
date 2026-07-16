@@ -28,7 +28,7 @@ HF_TOKEN=xxx bash hf-job.sh --owner <org>
 - All models in [ggml-org](https://huggingface.co/ggml-org) are auto-converted by a [GitHub Actions workflow](https://github.com/ggml-org/convert/actions/workflows/main.yml) once per week
   
   ```bash
-  HF_TOKEN=xxx bash convert.sh --owner ggml-org
+  HF_TOKEN=xxx bash hf-job.sh --owner ggml-org
   ```
 
 - A maintainer from the [ggml-org/hf](https://github.com/orgs/ggml-org/teams/hf) team can start the workflow manually from the [Actions pane](https://github.com/ggml-org/convert/actions/workflows/main.yml)
