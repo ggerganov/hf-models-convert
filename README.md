@@ -28,4 +28,4 @@ HF_TOKEN=xxx bash convert.sh --owner <org> --filter '^gemma'
   HF_TOKEN=xxx bash convert.sh --owner ggml-org
   ```
 
-- A maintainer can start the workflow manually from the [Actions pane](https://github.com/ggml-org/convert/actions)
+- A maintainer from the [ggml-org/hf](https://github.com/orgs/ggml-org/teams/hf) team can start the workflow manually from the [Actions pane](https://github.com/ggml-org/convert/actions/workflows/main.yml)
