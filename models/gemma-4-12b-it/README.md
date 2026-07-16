@@ -25,3 +25,6 @@ llama serve -hf __owner__/gemma-4-12B-it-GGUF
 
 - add info
 - add dflash
+
+> [!IMPORTANT]
+> This model is automatically converted using https://github.com/ggml-org/convert

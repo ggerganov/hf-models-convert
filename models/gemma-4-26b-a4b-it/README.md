@@ -25,3 +25,6 @@ llama serve -hf __owner__/gemma-4-26B-A4B-it-GGUF
 ### TODOs
 
 - add info
+
+> [!IMPORTANT]
+> This model is automatically converted using https://github.com/ggml-org/convert

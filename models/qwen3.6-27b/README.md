@@ -22,3 +22,6 @@ llama serve -hf __owner__/Qwen3.6-27B-GGUF
 ### TODOs
 
 - add info
+
+> [!IMPORTANT]
+> This model is automatically converted using https://github.com/ggml-org/convert
