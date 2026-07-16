@@ -2,12 +2,13 @@
 set -euo pipefail
 
 # Hugging Face Job to run convert.sh on HF infrastructure
-# Usage: ./hf-job.sh --owner <owner> [--one <name>] [--filter <regex>]
+# Usage: ./hf-job.sh --owner <owner> [--one <name>] [--filter <regex>] [--timeout <seconds>]
 
 echo ">>> Starting HF Job: Model Convert & Quantize"
 
 # Collect arguments to pass to convert.sh
 OWNER=""
+TIMEOUT="1h"
 CONVERT_ARGS=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -23,7 +24,11 @@ while [[ $# -gt 0 ]]; do
             CONVERT_ARGS="$CONVERT_ARGS --filter $2"
             shift 2
             ;;
-        *)
+        --timeout)
+            TIMEOUT="$2"
+            shift 2
+            ;;
+        *}
             echo "Unknown argument: $1"
             exit 1
             ;;
@@ -37,6 +42,7 @@ fi
 
 hf jobs run \
     --namespace "$OWNER" \
+    --timeout "$TIMEOUT" \
     --flavor cpu-xl \
     --secrets HF_TOKEN \
     --env HF_HUB_ENABLE_HF_XET=1 \
