@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euox pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
@@ -43,6 +43,8 @@ if [ -z "${HF_TOKEN:-}" ]; then
     echo "Error: HF_TOKEN environment variable is not set"
     exit 1
 fi
+
+set -x
 
 # Check HF_TOKEN has write access to owner
 if ! hf repos create "${OWNER}/__test-permissions" --type model --exist-ok 2>/dev/null; then
