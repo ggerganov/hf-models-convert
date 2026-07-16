@@ -1,0 +1,27 @@
+name: Model Conversion
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Launch HF Job
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN_CONVERT }}
+        run: bash hf-job.sh --owner ggml-org --one qwen3-0.6b-base
