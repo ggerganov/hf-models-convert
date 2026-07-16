@@ -52,14 +52,14 @@ fi
 
 # Build list of configs to process (early validation before expensive setup)
 if [ -n "$ONE_MODEL" ]; then
-    config_paths=("scripts/${ONE_MODEL}/config.sh")
+    config_paths=("models/${ONE_MODEL}/config.sh")
     if [ ! -f "${config_paths[0]}" ]; then
         echo "Error: No config.sh found for model '$ONE_MODEL'"
         exit 1
     fi
 elif [ -n "$FILTER_REGEX" ]; then
     config_paths=()
-    for candidate in scripts/*/config.sh; do
+    for candidate in models/*/config.sh; do
         dir=$(basename "$(dirname "$candidate")")
         if echo "$dir" | grep -qE "$FILTER_REGEX"; then
             config_paths+=("$candidate")
@@ -70,7 +70,7 @@ elif [ -n "$FILTER_REGEX" ]; then
         exit 1
     fi
 else
-    config_paths=(scripts/*/config.sh)
+    config_paths=(models/*/config.sh)
 fi
 
 # Cross-platform CPU count

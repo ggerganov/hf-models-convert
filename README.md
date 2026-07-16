@@ -2,7 +2,7 @@
 
 Automated pipeline for converting models to GGUF format and uploading them to HF.
 
-Supported models: [scripts/](scripts/)
+Supported models: [models/](models/)
 
 ## Usage
 

@@ -6,7 +6,7 @@ General:
 - Don't try to build or run the code unless you are explicitly asked to do so
 - Use the `gh` CLI tool when querying PRs, issues, or other GitHub resources
 
-scripts/ folder naming:
+models/ folder naming:
 - Folder names are all lowercase (e.g. `gemma-4-12b`, `gpt-oss-120b`)
 
 Coding:
