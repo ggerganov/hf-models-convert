@@ -1,5 +1,6 @@
 ---
-license: other
+license: apache-2.0
+pipeline_tag: text-generation
 tags:
 - gguf
 - quantized
