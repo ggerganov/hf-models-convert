@@ -9,7 +9,13 @@ base_model:
 
 # Qwen3.5-0.8B
 
-Source repos:
+Run with https://llama.app
+
+```bash
+llama serve -hf __owner__/Qwen3.5-0.8B-GGUF
+```
+
+### Source models
 - https://huggingface.co/Qwen/Qwen3.5-0.8B
 
 ### TODOs

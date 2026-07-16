@@ -9,7 +9,13 @@ base_model:
 
 # gpt-oss-20b
 
-Source repos:
+Run with https://llama.app
+
+```bash
+llama serve -hf __owner__/gpt-oss-20b-GGUF
+```
+
+### Source models
 - https://huggingface.co/openai/gpt-oss-20b
 
 ### TODOs

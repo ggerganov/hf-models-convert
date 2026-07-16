@@ -162,7 +162,7 @@ for config_path in "${config_paths[@]}"; do
         echo ">>> No dependency changes detected. Uploading README only."
         rm -rf "$upload_dir"
         mkdir -p "$upload_dir"
-        cp "$script_dir/README.md" "$upload_dir/"
+        sed "s/__owner__/$OWNER/g" "$script_dir/README.md" > "$upload_dir/README.md"
         hf repos create "$dest" --type model --exist-ok
         hf upload "$dest" "$upload_dir" --include "README.md" --type model
         rm -rf "$upload_dir"
@@ -172,7 +172,7 @@ for config_path in "${config_paths[@]}"; do
     # Download all dependencies
     rm -rf "$upload_dir"
     mkdir -p "$upload_dir"
-    cp "$script_dir/README.md" "$upload_dir/"
+    sed "s/__owner__/$OWNER/g" "$script_dir/README.md" > "$upload_dir/README.md"
 
     temp_dirs=()
     for key in $dep_keys; do

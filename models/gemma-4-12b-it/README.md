@@ -9,7 +9,13 @@ base_model:
 
 # gemma-4-12B-it
 
-Source repos:
+Run with https://llama.app
+
+```bash
+llama serve -hf __owner__/gemma-4-12B-it-GGUF
+```
+
+### Source models
 - https://huggingface.co/google/gemma-4-12B-it
 - https://huggingface.co/google/gemma-4-12B-it-assistant
 - https://huggingface.co/google/gemma-4-12B-it-qat-q4_0-unquantized-assistant

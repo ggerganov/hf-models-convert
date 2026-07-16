@@ -9,7 +9,13 @@ base_model:
 
 # gemma-4-E2B
 
-Source repo:
+Run with https://llama.app
+
+```bash
+llama serve -hf __owner__/gemma-4-E2B-GGUF
+```
+
+### Source models
 - https://huggingface.co/google/gemma-4-E2B
 
 ### TODOs

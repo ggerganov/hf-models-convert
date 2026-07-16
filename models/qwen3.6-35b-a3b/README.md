@@ -9,7 +9,13 @@ base_model:
 
 # Qwen3.6-35B-A3B
 
-Source repos:
+Run with https://llama.app
+
+```bash
+llama serve -hf __owner__/Qwen3.6-35B-A3B-GGUF
+```
+
+### Source models
 - https://huggingface.co/Qwen/Qwen3.6-35B-A3B
 - https://huggingface.co/z-lab/Qwen3.6-35B-A3B-DFlash
 
