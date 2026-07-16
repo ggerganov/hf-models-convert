@@ -53,7 +53,7 @@ hf jobs run \
       && rm -rf /var/lib/apt/lists/*
 
     # Clone the conversion scripts
-    git clone https://github.com/ggerganov/hf-models-convert.git /tmp/convert
+    git clone https://github.com/ggml-org/convert.git /tmp/convert
     cd /tmp/convert
 
     # Run the conversion script

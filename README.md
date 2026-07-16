@@ -1,4 +1,4 @@
-# hf-models-convert
+# convert
 
 Automated pipeline for converting models to GGUF format and uploading them to HF.
 
