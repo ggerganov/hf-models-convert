@@ -46,6 +46,9 @@ fi
 
 set -x
 
+echo ">>> Installing HF CLI"
+pip install -r requirements.txt
+
 # Check HF_TOKEN has write access to owner
 if ! hf repos create "${OWNER}/__test-permissions" --type model --exist-ok 2>/dev/null; then
     echo "Error: HF_TOKEN does not have write access to '$OWNER'"
@@ -98,9 +101,6 @@ mkdir -p build && cd build
 cmake .. -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_UI=OFF
 make -j"$CPU_COUNT" llama-quantize
 cd ../..
-
-echo ">>> Installing HF CLI"
-pip install -r requirements.txt
 
 # Iterate over selected config(s)
 for config_path in "${config_paths[@]}"; do
