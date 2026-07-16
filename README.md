@@ -34,3 +34,4 @@ bash hf-job.sh --owner <org>
   ```
 
 - A maintainer from the [ggml-org/hf](https://github.com/orgs/ggml-org/teams/hf) team can start the workflow manually from the [Actions pane](https://github.com/ggml-org/convert/actions/workflows/main.yml)
+- The conversion uses the latest version of [llama.cpp](https://github.com/ggml-org/llama.cpp)
